@@ -35,25 +35,41 @@ export class AppComponent implements OnInit {
       }),
       products: this.fb.array([]),
     });
+
+    this.signupForm.get('type').valueChanges
+      .subscribe(value => {
+        updateFormFields();
+      })
+  }
+
+  updateFormFields(type: 'individu' | 'entreprise'){
+    if(type ==='individu'){
+      this.removeEntrepriseFields();
+      this.addIndividuFields();
+    }
+    else if(type ==='entreprise'){
+      this.removeIndividuFields();
+      this.addEntrepriseFields();
+    }
   }
 
   
-  // buildType() {
-  //   let type = this.signupForm.get('type').value;
-  //   if (type === 'entreprise') {
-  //     this.signupForm.addControl('companyName', new FormControl())
-  //   } else {
-  //     console.log('individu');
-  //   }
-  // }
+  buildType() {
+    let type = this.signupForm.get('type').value;
+    if (type === 'entreprise') {
+      this.signupForm.addControl('companyName', new FormControl())
+    } else {
+      console.log('individu');
+    }
+  }
 
-  // addCompanyFields() {
-  //   this.signupForm.removeControl('companyName'); // je supprime companyName du signupForm
-  // }
+  addCompanyFields() {
+    this.signupForm.removeControl('companyName'); // je supprime companyName du signupForm
+  }
 
-  // addUserFields() {
-  //   this.signupForm.removeControl('infosLegales'); //je supprime infosLegales du signupForm
-  // }
+  addUserFields() {
+    this.signupForm.removeControl('infosLegales'); //je supprime infosLegales du signupForm
+  }
 
   get products() {
     return this.signupForm.get('products') as FormArray;
