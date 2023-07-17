@@ -23,17 +23,8 @@ export class AppComponent implements OnInit {
 
   buildForm() {
     this.signupForm = this.fb.group({
-      email: ['', Validators.required, Validators.email],
+      email: ['', Validators.required],
       type: [], // entreprise ou individu
-      // lastName: [''],
-      // firstName: [''],
-
-      // // afficher si type est entreprise
-      // companyName: ['', Validators.required],
-      // infosLegales: this.fb.group({
-      //   siret: [''],
-      // }),
-      // products: this.fb.array([]),
     });
 
     this.signupForm.get('type').valueChanges.subscribe((value) => {
@@ -54,22 +45,30 @@ export class AppComponent implements OnInit {
   removeEntrepriseFields() {
     this.signupForm.removeControl('companyName');
     this.signupForm.removeControl('infosLegales');
+    this.signupForm.removeControl('products');
   }
 
-  removeIndividuFields() {}
+  removeIndividuFields() {
+    this.signupForm.removeControl('lastName');
+    this.signupForm.removeControl('firstName');
+  }
 
   // Lorsque la sélection est sur individu
   addIndividuFields() {
-    // this.signupForm.addControl('')
+    this.signupForm.addControl('lastName', new FormControl(''));
+    this.signupForm.addControl('firstName', new FormControl(''));
   }
 
   // Lorsque la sélection est sur entreprise
   addEntrepriseFields() {
     this.signupForm.addControl('companyName', new FormControl(''));
-    (this.signupForm.get('infosLegales') as FormGroup).addControl(
-      'siret',
-      new FormControl('')
+    this.signupForm.addControl(
+      'infosLegales',
+      this.fb.group({
+        siret: [''],
+      })
     );
+    this.signupForm.addControl('products', this.fb.array([]));
   }
 
   get products() {
@@ -91,7 +90,6 @@ export class AppComponent implements OnInit {
   onSubmit() {
     if (this.signupForm.valid) {
       console.log(this.signupForm.value);
-      // Vous pouvez ici envoyer les données vers un service ou effectuer d'autres actions
     }
   }
 }
