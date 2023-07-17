@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
   buildForm() {
     this.signupForm = this.fb.group({
-      email: ['', Validators.required],
+      email: ['enzo.aime91@gmail.com', Validators.required],
       type: [], // entreprise ou individu
     });
 
@@ -55,17 +55,17 @@ export class AppComponent implements OnInit {
 
   // Lorsque la sélection est sur individu
   addIndividuFields() {
-    this.signupForm.addControl('lastName', new FormControl(''));
-    this.signupForm.addControl('firstName', new FormControl(''));
+    this.signupForm.addControl('lastName', new FormControl('AIME'));
+    this.signupForm.addControl('firstName', new FormControl('Enzo'));
   }
 
   // Lorsque la sélection est sur entreprise
   addEntrepriseFields() {
-    this.signupForm.addControl('companyName', new FormControl(''));
+    this.signupForm.addControl('companyName', new FormControl('Prezevent'));
     this.signupForm.addControl(
       'infosLegales',
       this.fb.group({
-        siret: [''],
+        siret: ['45086116600038'],
       })
     );
     this.signupForm.addControl('products', this.fb.array([]));
@@ -77,9 +77,10 @@ export class AppComponent implements OnInit {
 
   addProduct() {
     const productGroup = this.fb.group({
-      name: [''],
-      price: [''],
+      name: ['test'],
+      price: ['50'],
     });
+
     this.products.push(productGroup);
   }
 
