@@ -18,13 +18,17 @@ export class AppComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    this.buildForm();
+  }
+
+  buildForm() {
     this.signupForm = this.fb.group({
-      userData: new FormGroup({
-        email: new FormControl(null, [Validators.required, Validators.email]),
-      }),
-      type: [],
+      email: ['', Validators.required, Validators.email],
+      type: [], // entreprise ou individu
       lastName: [''],
       firstName: [''],
+
+      // afficher si type est entreprise
       companyName: ['', Validators.required],
       infosLegales: this.fb.group({
         siret: [''],
@@ -33,11 +37,23 @@ export class AppComponent implements OnInit {
     });
   }
 
-  buildType() {}
+  
+  // buildType() {
+  //   let type = this.signupForm.get('type').value;
+  //   if (type === 'entreprise') {
+  //     this.signupForm.addControl('companyName', new FormControl())
+  //   } else {
+  //     console.log('individu');
+  //   }
+  // }
 
-  addCompanyFields() {}
+  // addCompanyFields() {
+  //   this.signupForm.removeControl('companyName'); // je supprime companyName du signupForm
+  // }
 
-  addUserFields() {}
+  // addUserFields() {
+  //   this.signupForm.removeControl('infosLegales'); //je supprime infosLegales du signupForm
+  // }
 
   get products() {
     return this.signupForm.get('products') as FormArray;

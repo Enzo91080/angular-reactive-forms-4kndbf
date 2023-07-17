@@ -21,7 +21,7 @@
       </ul>
       <pre>{{ signupForm.value | json }}</pre>
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-        <div formGroupName="userData">
+        <div>
           <div class="form-group">
             <label for="email">Email</label>
             <input
