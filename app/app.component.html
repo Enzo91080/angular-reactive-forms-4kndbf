@@ -1,0 +1,135 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-md-offset-2 col-sm-offset-1">
+      <h1>EXERCICE</h1>
+      <p>
+        Implémenter un reactive form permettant la saisie des informations
+        relatives à une personne ou une entreprise:
+      </p>
+      <b>Champs:</b>
+      <ul>
+        <li>Email</li>
+        <li>Type (individu ou entreprise)</li>
+        <li>Nom de famille (si individu)</li>
+        <li>Prénom (si individu)</li>
+        <li>Nom de société (si entreprise)</li>
+        <li>SIREN (si entreprise), à mettre dans propriété "infos_legales"</li>
+        <li>
+          Produits proposés (si entreprise): liste avec nom du produit et tarif.
+          possibilité d'en ajouter et supprimer
+        </li>
+      </ul>
+      <pre>{{ signupForm.value | json }}</pre>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div formGroupName="userData">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              formControlName="email"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="type">Type:</label>
+          <select class="form-control" id="type" formControlName="type">
+            <option value="individu">Individu</option>
+            <option value="entreprise">Entreprise</option>
+          </select>
+        </div>
+        <div
+          class="form-group"
+          *ngIf="signupForm.get('type')!.value === 'individu'"
+        >
+          <label for="lastName">Nom de famille:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            formControlName="lastName"
+          />
+          <label for="firstName">Prénom:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            formControlName="firstName"
+          />
+        </div>
+        <div *ngIf="signupForm.get('type')!.value === 'entreprise'">
+          <div *ngIf="signupForm.get('companyName') as companyName">
+            <label for="companyName">Nom de société:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="companyName"
+              formControlName="companyName"
+            />
+            <span
+              *ngIf="companyName.invalid && companyName.touched"
+              class="text-danger"
+              >Requis</span
+            >
+          </div>
+          <div formGroupName="infosLegales">
+            <label for="siret">SIRET:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="siret"
+              formControlName="siret"
+            />
+          </div>
+        </div>
+        <div class="d-flex">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="addProduct()"
+          >
+            Ajouter un produit
+          </button>
+          <div formArrayName="products">
+            <div
+              *ngFor="let product of products.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div>
+                <label for="productName{{ i }}">Nom du produit:</label>
+                <input
+                  type="text"
+                  id="productName{{ i }}"
+                  formControlName="name"
+                />
+              </div>
+              <div>
+                <label for="productPrice{{ i }}">Tarif:</label>
+                <input
+                  type="text"
+                  id="productPrice{{ i }}"
+                  formControlName="price"
+                />
+              </div>
+              <button
+                class="btn btn-danger"
+                type="button"
+                (click)="removeProduct(i)"
+              >
+                Supprimer
+              </button>
+            </div>
+            <button
+              [disabled]="signupForm.invalid"
+              class="btn btn-primary"
+              type="submit"
+            >
+              Enregistrer
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
