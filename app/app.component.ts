@@ -25,50 +25,51 @@ export class AppComponent implements OnInit {
     this.signupForm = this.fb.group({
       email: ['', Validators.required, Validators.email],
       type: [], // entreprise ou individu
-      lastName: [''],
-      firstName: [''],
+      // lastName: [''],
+      // firstName: [''],
 
-      // afficher si type est entreprise
-      companyName: ['', Validators.required],
-      infosLegales: this.fb.group({
-        siret: [''],
-      }),
-      products: this.fb.array([]),
+      // // afficher si type est entreprise
+      // companyName: ['', Validators.required],
+      // infosLegales: this.fb.group({
+      //   siret: [''],
+      // }),
+      // products: this.fb.array([]),
     });
 
-    this.signupForm.get('type').valueChanges
-      .subscribe(value => {
-        updateFormFields();
-      })
+    this.signupForm.get('type').valueChanges.subscribe((value) => {
+      this.updateFormFields(value);
+    });
   }
 
-  updateFormFields(type: 'individu' | 'entreprise'){
-    if(type ==='individu'){
+  updateFormFields(type: 'individu' | 'entreprise') {
+    if (type === 'individu') {
       this.removeEntrepriseFields();
       this.addIndividuFields();
-    }
-    else if(type ==='entreprise'){
+    } else if (type === 'entreprise') {
       this.removeIndividuFields();
       this.addEntrepriseFields();
     }
   }
 
-  
-  buildType() {
-    let type = this.signupForm.get('type').value;
-    if (type === 'entreprise') {
-      this.signupForm.addControl('companyName', new FormControl())
-    } else {
-      console.log('individu');
-    }
+  removeEntrepriseFields() {
+    this.signupForm.removeControl('companyName');
+    this.signupForm.removeControl('infosLegales');
   }
 
-  addCompanyFields() {
-    this.signupForm.removeControl('companyName'); // je supprime companyName du signupForm
+  removeIndividuFields() {}
+
+  // Lorsque la sélection est sur individu
+  addIndividuFields() {
+    // this.signupForm.addControl('')
   }
 
-  addUserFields() {
-    this.signupForm.removeControl('infosLegales'); //je supprime infosLegales du signupForm
+  // Lorsque la sélection est sur entreprise
+  addEntrepriseFields() {
+    this.signupForm.addControl('companyName', new FormControl(''));
+    (this.signupForm.get('infosLegales') as FormGroup).addControl(
+      'siret',
+      new FormControl('')
+    );
   }
 
   get products() {
